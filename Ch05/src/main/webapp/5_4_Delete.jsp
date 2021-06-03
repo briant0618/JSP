@@ -10,10 +10,6 @@
 
 
 	 String uid = request.getParameter("uid"); 
-	 String name = request.getParameter("name"); 
-	 String hp = request.getParameter("hp"); 
-	 String pos = request.getParameter("pos"); 
-	 String dep = request.getParameter("dep"); 
 	 
 	 //DB 정보
 	 String host = "jdbc:mysql://13.209.73.49:3306/siopmy";
@@ -32,7 +28,7 @@
 	 	Statement stmt = conn.createStatement();
 	 
 	 // 4단계 - Sql 실행
-		String sql = "INSERT INTO `Member` VALUES ('" + uid + "','" + name + "','" + hp + "','"+ pos + "','" + dep + "',NOW());";	
+		String sql = "DELETE FROM `Member` WHERE `uid`='" + uid + "';";
 		stmt.executeUpdate(sql);
 		
 	 // 5단계 - Sql Resultset 처리
@@ -46,7 +42,7 @@
 	
 	 
 	 // Redirect
-	 response.sendRedirect("../5_1_Insert.jsp");
+	 response.sendRedirect("./5_2_Select.jsp");
 %>
 
 	

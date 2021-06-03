@@ -32,7 +32,12 @@
 	 	Statement stmt = conn.createStatement();
 	 
 	 // 4단계 - Sql 실행
-		String sql = "INSERT INTO `Member` VALUES ('" + uid + "','" + name + "','" + hp + "','"+ pos + "','" + dep + "',NOW());";	
+		String sql = "UPDATE `Member` SET ";
+		sql += "`name`='"+name+"',";
+		sql += "`hp`='"+hp+"',";
+		sql += "`pos`='"+pos+"',";
+		sql += "`dep`='"+dep+"' ";
+		sql += "WHERE `uid`='"+uid+"';";
 		stmt.executeUpdate(sql);
 		
 	 // 5단계 - Sql Resultset 처리
@@ -46,7 +51,7 @@
 	
 	 
 	 // Redirect
-	 response.sendRedirect("../5_1_Insert.jsp");
+	 response.sendRedirect("../5_2_Select.jsp");
 %>
 
 	

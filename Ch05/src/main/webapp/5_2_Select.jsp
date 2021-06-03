@@ -13,17 +13,11 @@
 
 	 request.setCharacterEncoding("UTF-8");
 
-
-	 String uid = request.getParameter("uid"); 
-	 String name = request.getParameter("name"); 
-	 String hp = request.getParameter("hp"); 
-	 String pos = request.getParameter("pos"); 
-	 String dep = request.getParameter("dep"); 
-	 
+  
 	 //DB 정보
-	 String host = "jdbc:mysql://54.180.160.240:3306/siopmy";
-	 String user = "siopmy";
-	 String pass = "1234";
+	 String host = "jdbc:mysql://13.209.73.49:3306/siopmy";
+	 String user = "briant";
+	 String pass = "k2917h06";
 	 
 	 List<MemberBean> members = new ArrayList<>();
 	 
@@ -106,8 +100,8 @@
 			<td><%= mb.getDep() %></td>
 			<td><%= mb.getRdate().substring(2, 10) %></td>
 			<td>
-				<a href = "#"> Edit </a>
-				<a href = "#"> Delete </a>
+				<a href = "./5_3_Update.jsp?uid=<%= mb.getUid() %>"> Edit </a> <!-- 값을 심어서 보내야 하기때문에 uid 써줌 -->
+				<a href = "./5_4_Delete.jsp?uid=<%= mb.getUid() %>"> Delete </a>
 			</td>
 		</tr>
 		<% } %>
