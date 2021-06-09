@@ -4,25 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
-    
     <link rel="stylesheet" href="/JBoard1/css/style.css"/>
-    
-    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src= "/JBoard1/js/checkUid.js"></script>
-    <script src= "/JBoard1/js/checkNick.js"></script>
-    <script src= "/JBoard1/js/checkEmail.js"></script>
-    <script src= "/JBoard1/js/checkHp.js"></script>
-	<script src = "/JBoard1/js/checkPass.js"></script>
-    <script src = "/JBoard1/js/checkName.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/JBoard1/js/checkUid.js"></script>
+    <script src="/JBoard1/js/checkNick.js"></script>
+    <script src="/JBoard1/js/checkEmail.js"></script>
+    <script src="/JBoard1/js/checkHp.js"></script>
+    <script src="/JBoard1/js/checkPass.js"></script>
+    <script src="/JBoard1/js/checkName.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/JBoard1/js/zipcode.js"></script>
-	<script src = "/JBoard1/js/validation.js"></script>
-
+	<script src="/JBoard1/js/validation.js"></script>
 </head>
 <body>
     <div id="wrapper">
         <section id="user" class="register">
-            <form id = "regForm" action="/JBoard1/proc/register.jsp" method="POST">
+            <form id="regForm" action="/JBoard1/user/proc/register.jsp" method="POST">
                 <table border="1">
                     <caption>사이트 이용정보 입력</caption>
                     <tr>
@@ -51,8 +48,8 @@
                     <tr>
                         <td>이름</td>
                         <td>
-                            <input type="text" name="name" placeholder="이름 입력"/> 
-                             <span class="resultName"></span>                           
+                            <input type="text" name="name" placeholder="이름 입력"/>
+                            <span class="resultName"></span>                            
                         </td>
                     </tr>
                     <tr>
@@ -78,7 +75,7 @@
                         </td>
                     </tr>
                     <tr>
-                         <td>주소</td>
+                        <td>주소</td>
                         <td>
                             <div>
                                 <input type="text" id="zip" name="zip" placeholder="우편번호" readonly/>
@@ -94,10 +91,11 @@
                     </tr>
                 </table>
 
-                 <div>
+                <div>
                     <a href="/JBoard1/user/login.jsp" class="btnCancel">취소</a>
                     <input type="submit"   class="btnJoin" value="회원가입"/>
                 </div>
+
             </form>
         </section>
     </div>    

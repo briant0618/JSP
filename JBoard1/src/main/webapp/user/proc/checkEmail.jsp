@@ -1,6 +1,8 @@
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="kr.co.jboard1.db.Sql"%>
+<%@page import="kr.co.jboard1.db.DBConfig"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
 <%@ page contentType="application/json;charset=UTF-8" pageEncoding="UTF-8"%>
@@ -9,22 +11,19 @@
 	request.setCharacterEncoding("utf-8");
 	String email = request.getParameter("email");
 	
-	//DB 정보
-	String host = "jdbc:mysql://13.209.73.49:3306/siopmy";
-	 String user = "briant";
-	 String pass = "k2917h06";
 	int count = -1;
 	
 	try{
-	// 1단계
-		Class.forName("com.mysql.jdbc.Driver");
-	// 2단계
-		Connection conn = DriverManager.getConnection(host, user, pass);
-	// 3단계
-		Statement stmt = conn.createStatement();
+	// 1 ~ 2단계
+		Connection conn = DBConfig.getInstance().getConnection();
+	
+	// 3단계 [repactoring한거임 ㅎㅎ]
+		PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_COUNT_EMAIL);
+		psmt.setString(1, email);
+		
 	// 4단계
-		String sql = "SELECT COUNT(`email`) FROM `JBoard_Member` WHERE `email`='"+email+"';";
-		ResultSet rs = stmt.executeQuery(sql);
+		ResultSet rs = psmt.executeQuery();
+	
 	// 5단계
 		if(rs.next()){
 			count = rs.getInt(1);

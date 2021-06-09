@@ -1,6 +1,8 @@
+<%@page import="kr.co.jboard1.db.Sql"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="kr.co.jboard1.db.DBConfig"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
 <%@ page contentType="application/json;charset=UTF-8" pageEncoding="UTF-8"%>
@@ -17,14 +19,14 @@
 	
 	try{
 		// 1단계
-		Class.forName("com.mysql.jdbc.Driver");
-		// 2단계
-		Connection conn = DriverManager.getConnection(host, user, pass);
+		Connection conn = DBConfig.getInstance().getConnection();		
 		// 3단계
-		Statement stmt = conn.createStatement();
+		PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_COUNT_NICK);
+		psmt.setString(1, nick);
+		
 		// 4단계
-		String sql = "SELECT COUNT(`nick`) FROM `JBoard_Member` WHERE `nick`='"+nick+"';";
-		ResultSet rs = stmt.executeQuery(sql);
+		ResultSet rs = psmt.executeQuery();
+		
 		// 5단계
 		if(rs.next()){
 			count = rs.getInt(1);
