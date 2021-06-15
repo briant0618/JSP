@@ -27,8 +27,10 @@
 		PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_MEMBER);
 		psmt.setString(1, uid);
 		psmt.setString(2, pass);
+		
 		// 4단계
 		ResultSet rs = psmt.executeQuery();
+		
 		// 5단계
 		if(rs.next()){
 			// 회원일 경우

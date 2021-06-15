@@ -1,4 +1,25 @@
+<%@page import="kr.co.jboard1.bean.ArticleBean"%>
+<%@page import="kr.co.jboard1.dao.ArticleDao"%>
 <%@ page  contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+
+
+<%  // list에서 전송된 데이터 수신
+	request.setCharacterEncoding("utf-8");
+	String seq = request.getParameter("seq");
+	
+	// Dao객체 가져오기
+	ArticleDao dao = ArticleDao.getInstance();
+	
+	// 글 가져오기
+	ArticleBean article = dao.selectArticle(seq);
+	
+	// 해당 글 조회수 업데이트
+	dao.updateArticleHit(seq);
+	
+	
+
+
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,19 +34,21 @@
             <table>
                 <tr>
                     <td>제목</td>
-                    <td><input type="text" name="title" value="제목입니다." readonly/></td>
+                    <td><input type="text" name="title" value="<%= article.getTitle() %>" readonly/></td>
                 </tr>
+                <% if(article.getFile() == 1){ %>
                 <tr>
                     <td>첨부파일</td>
                     <td>
-                        <a href="#">2020년 상반기 매출자료.xls</a>
-                        <span>7회 다운로드</span>
+                        <a href="/JBoard1/proc/download.jsp?seq=<%= article.getFb().getSeq() %>"><%= article.getFb().getOriName() %></a>
+                        <span>[ 다운로드 횟수 = <%= article.getFb().getDownload() %>회 ]</span>
                     </td>
                 </tr>
+                <% } %>
                 <tr>
                     <td>내용</td>
                     <td>
-                        <textarea name="content" readonly>내용 샘플입니다.</textarea>
+                        <textarea name="content" readonly><%= article.getContent() %></textarea>
                     </td>
                 </tr>
             </table>

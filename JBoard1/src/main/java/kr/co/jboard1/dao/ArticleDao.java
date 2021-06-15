@@ -1,0 +1,276 @@
+package kr.co.jboard1.dao;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.sql.PreparedStatement;
+
+
+import kr.co.jboard1.bean.ArticleBean;
+import kr.co.jboard1.bean.FileBean;
+import kr.co.jboard1.db.DBConfig;
+import kr.co.jboard1.db.Sql;
+
+/* dao [Try / Catch의 남발을 막기위해서 미리 class로 모듈화 시킴.]
+   dao = Database Access Object
+*/
+public class ArticleDao {
+	private static ArticleDao instance = new ArticleDao();
+	private ArticleDao() {}
+	
+	public static ArticleDao getInstance() {
+		return instance;
+	} // singleTone 문법 기억해두자! get이 private를 받을수 없으니 static으로 만듦
+
+	
+	
+	
+	public int getPageStartNum(int total, int start) { // 각페이지에 삭제된 글도 있을테니 보기 편하게 글숫자 순서대로 번호 만들기
+		return total - start;
+	}
+	
+	public int getLimitStart(int currentPage) { // 그룹 나누기에서 현재 페이지 작업
+		return (currentPage - 1 )* 10;
+	}
+	
+	
+	public int getCurrentPg(String pg) { // 페이징 현재 페이지 표기 작업
+		int currentPage = 1;
+		if(pg != null) {
+			
+			currentPage = Integer.parseInt(pg);
+		}
+		return currentPage;
+	}
+	
+	
+	public int[] getPageGroup(int currentPage, int lastPageNum) { // 페이징 10개씩 그룹 나누기
+		int groupCurrent = (int)Math.ceil(currentPage / 10.0);
+		int groupStart = (groupCurrent - 1) * 10 + 1;
+		int groupEnd = groupCurrent * 10;
+		
+		if(groupEnd > lastPageNum) {
+			groupEnd = lastPageNum; // 글들이 lastPage보다 크지않게 하기위해서
+		}
+		
+		
+		int [] groups = {groupStart,groupEnd};
+		
+		return groups; // 2개 이상 return이 불가능 -> array써서 1개로 만들어줌
+		
+	}
+	
+	public int getLastPageNum(int total) { // 페이징 작업 마지막 페이지 계산 구문
+		
+
+		int lastPageNum = 0;
+		
+		if(total % 10 == 0){
+			lastPageNum = total / 10;
+		}else{
+			lastPageNum = total / 10 + 1;
+		}
+		
+		return lastPageNum;
+	}
+	
+	
+	public int selectCountArticle() { // 페이징 작업 구문
+		
+		int total = 0; 
+		
+		try {
+		// 1.2단계
+			Connection conn = DBConfig.getInstance().getConnection();
+			
+		// 3단계
+			PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_COUNT_ARTICLE);
+		
+		// 4단계
+			ResultSet rs = psmt.executeQuery();
+			
+		// 5단계
+			if(rs.next()) {
+				total = rs.getInt(1);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return total;
+	}
+	
+	public void insertArticle() {}
+	
+	public ArticleBean selectArticle(String seq) { // view.jsp에 사용되어 글을 보기위한 구문
+		
+		ArticleBean article = new ArticleBean();
+		FileBean fb = new FileBean();
+		
+		try{
+			// 1.2 단계
+			Connection conn = DBConfig.getInstance().getConnection();
+			
+			// 3단계
+			PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_ARTICLE);
+			psmt.setString(1, seq);
+			
+			// 4단계
+			ResultSet rs = psmt.executeQuery();
+			
+			// 5단계
+			if(rs.next()) {
+				article.setSeq(rs.getInt(1));
+				article.setParent(rs.getInt(2));
+				article.setComment(rs.getInt(3));
+				article.setCate(rs.getString(4));
+				article.setTitle(rs.getString(5));
+				article.setContent(rs.getString(6));
+				article.setFile(rs.getInt(7));
+				article.setHit(rs.getInt(8));
+				article.setUid(rs.getString(9));
+				article.setRegip(rs.getString(10));
+				article.setRdate(rs.getString(11));
+				
+				// 추가 필드 [ File없는 놈도 view되게 확장 -> 객체안에 객체가 되듯 Article안으로 fb를 넣음 ] 
+				fb.setSeq(rs.getInt(12));
+				fb.setParent(rs.getInt(13));
+				fb.setOriName(rs.getString(14));
+				fb.setNewName(rs.getString(15));
+				fb.setDownload(rs.getInt(16));
+				fb.setRdate(rs.getString(17));
+				
+				article.setFb(fb);
+				
+				
+			}
+			
+			
+			// 6단계
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		return article;
+		
+	}
+	
+	public List<ArticleBean> selectArticles(int start) { // 게시물 가져오기 구문
+		
+		List<ArticleBean> articles = new ArrayList<>(); 
+		
+		try{
+			// 1,2단계
+				Connection conn = DBConfig.getInstance().getConnection();
+			
+			// 3단계
+				PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_ARTICLES);
+				psmt.setInt(1, start);
+			
+			// 4단계
+				ResultSet rs = psmt.executeQuery();
+			
+			// 5단계
+				while(rs.next()){
+					ArticleBean article = new ArticleBean();
+					article.setSeq(rs.getInt(1)); 
+					article.setParent(rs.getInt(2)); 
+					article.setComment(rs.getInt(3)); 
+					article.setCate(rs.getString(4)); 
+					article.setTitle(rs.getString(5)); 
+					article.setContent(rs.getString(6)); 
+					article.setFile(rs.getInt(7)); 
+					article.setHit(rs.getInt(8)); 
+					article.setUid(rs.getString(9));	
+					article.setRegip(rs.getString(10));	
+					article.setRdate(rs.getString(11));	
+					article.setNick(rs.getString(12));	
+					
+					
+					articles.add(article);
+				}
+			// 6단계 
+				conn.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		
+		return articles;
+	}
+	
+	public FileBean selectFile(String seq) { // Download 파일 조회하기
+		FileBean fb = new FileBean();
+		
+		try {
+			Connection conn = DBConfig.getInstance().getConnection();
+			PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_FILE);
+			
+			psmt.setString(1, seq);
+			
+			ResultSet rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				fb.setSeq(rs.getInt(1));
+				fb.setParent(rs.getInt(2));
+				fb.setOriName(rs.getString(3));
+				fb.setNewName(rs.getString(4));
+				fb.setDownload(rs.getInt(5));
+				fb.setRdate(rs.getString(6));
+				
+			}
+			conn.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return fb;
+	}
+	
+	
+	
+	
+	
+	public void updateArticle() {}
+	
+	public void updateArticleHit(String seq) { // hit수 1씩 올리기 구문
+		try{
+			// 1.2단계
+			Connection conn = DBConfig.getInstance().getConnection();
+			
+			// 3단계
+			PreparedStatement psmt = conn.prepareStatement(Sql.UPDATE_ARTICLE_HIT);
+			psmt.setString(1, seq);
+			
+			// 4단계
+			psmt.executeUpdate();
+					
+			// 6단계
+			conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateFileDownload(String seq) { // 다운로드 횟수 1씩 올리기 구문
+		try{
+			// 1,2단계
+			Connection conn = DBConfig.getInstance().getConnection();
+			// 3단계
+			PreparedStatement psmt = conn.prepareStatement(Sql.UPDATE_FILE_DOWNLOAD);
+			psmt.setString(1, seq);
+			// 4단계
+			psmt.executeUpdate();
+			// 5단계			
+			// 6단계
+			conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void deleteArticle() {}
+	
+	
+}
