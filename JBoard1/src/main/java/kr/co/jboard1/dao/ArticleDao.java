@@ -105,6 +105,27 @@ public class ArticleDao {
 	
 	public void insertArticle() {}
 	
+	public void insertComment(ArticleBean comment) {
+		
+		try{
+			// 1,2 단계
+			Connection conn = DBConfig.getInstance().getConnection();
+			// 3 단계
+			PreparedStatement psmt = conn.prepareStatement(Sql.INSERT_COMMENT);
+			psmt.setInt(1, comment.getParent());
+			psmt.setString(2, comment.getContent());
+			psmt.setString(3, comment.getUid());
+			psmt.setString(4, comment.getRegip());
+			// 4 단계
+			psmt.executeUpdate();
+			// 5 단계
+			// 6 단계
+			conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	public ArticleBean selectArticle(String seq) { // view.jsp에 사용되어 글을 보기위한 구문
 		
 		ArticleBean article = new ArticleBean();
@@ -200,6 +221,50 @@ public class ArticleDao {
 		return articles;
 	}
 	
+	public List<ArticleBean> selectComments(String parent) { // 댓글 가져오기 구문
+		
+		List<ArticleBean> articles = new ArrayList<>(); 
+		
+		try{
+			// 1,2단계
+				Connection conn = DBConfig.getInstance().getConnection();
+			
+			// 3단계
+				PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_COMMENTS);
+				psmt.setString(1, parent);
+			
+			// 4단계
+				ResultSet rs = psmt.executeQuery();
+			
+			// 5단계
+				while(rs.next()){
+					ArticleBean article = new ArticleBean();
+					article.setSeq(rs.getInt(1)); 
+					article.setParent(rs.getInt(2)); 
+					article.setComment(rs.getInt(3)); 
+					article.setCate(rs.getString(4)); 
+					article.setTitle(rs.getString(5)); 
+					article.setContent(rs.getString(6)); 
+					article.setFile(rs.getInt(7)); 
+					article.setHit(rs.getInt(8)); 
+					article.setUid(rs.getString(9));	
+					article.setRegip(rs.getString(10));	
+					article.setRdate(rs.getString(11));	
+					article.setNick(rs.getString(12));	
+					
+					
+					articles.add(article);
+				}
+			// 6단계 
+				conn.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		
+		return articles;
+	}
+	
+	
 	public FileBean selectFile(String seq) { // Download 파일 조회하기
 		FileBean fb = new FileBean();
 		
@@ -231,7 +296,46 @@ public class ArticleDao {
 	
 	
 	
-	public void updateArticle() {}
+	public void updateArticle(String title,String content,String seq) {
+		
+		try{
+			Connection conn = DBConfig.getInstance().getConnection();
+			
+			PreparedStatement psmt = conn.prepareStatement(Sql.UPDATE_ARTICLE);
+			psmt.setString(1, title);
+			psmt.setString(2, content);
+			psmt.setString(3, seq);
+			
+			psmt.executeUpdate();
+			
+			conn.close();
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int updateComment(String content, String seq) {
+		
+		int result = 0;
+		
+		try {
+			Connection conn = DBConfig.getInstance().getConnection();
+			PreparedStatement psmt = conn.prepareStatement(Sql.UPDATE_COMMENT);
+			
+			psmt.setString(1, content);
+			psmt.setString(2, seq);
+			
+			result = psmt.executeUpdate();
+			conn.close();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
 	public void updateArticleHit(String seq) { // hit수 1씩 올리기 구문
 		try{
@@ -240,6 +344,32 @@ public class ArticleDao {
 			
 			// 3단계
 			PreparedStatement psmt = conn.prepareStatement(Sql.UPDATE_ARTICLE_HIT);
+			psmt.setString(1, seq);
+			
+			// 4단계
+			psmt.executeUpdate();
+					
+			// 6단계
+			conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateCommentCount(String seq,int type) { // 댓글수 +1 올리기와 -1로 내리기 위한 구문
+		try{
+			PreparedStatement psmt = null;
+			
+			// 1.2단계
+			Connection conn = DBConfig.getInstance().getConnection();
+			
+			// 3단계
+			if(type == 1) {
+				psmt = conn.prepareStatement(Sql.UPDATE_COMMENT_PLUS);
+			}else{
+				psmt = conn.prepareStatement(Sql.UPDATE_COMMENT_MINUS);
+			}
+			
 			psmt.setString(1, seq);
 			
 			// 4단계
@@ -270,7 +400,42 @@ public class ArticleDao {
 	}
 	
 	
-	public void deleteArticle() {}
+	public void deleteArticle(String seq) {
+		
+		try{
+			// 1,2단계
+			Connection conn = DBConfig.getInstance().getConnection();
+			// 3단계
+			PreparedStatement psmt = conn.prepareStatement(Sql.DELETE_ARTICLE);
+			psmt.setString(1, seq);
+			// 4단계
+			psmt.executeUpdate();
+			// 5단계			
+			// 6단계
+			conn.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
+	
+	public void deleteComment(String seq) {
+		
+		try {
+			Connection conn = DBConfig.getInstance().getConnection();
+			PreparedStatement psmt = conn.prepareStatement(Sql.DELETE_COMMENT);
+			
+			psmt.setString(1, seq);
+			
+			
+			psmt.executeUpdate();
+			
+			
+			conn.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

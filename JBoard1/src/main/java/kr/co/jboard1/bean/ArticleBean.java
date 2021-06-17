@@ -13,9 +13,11 @@ public class ArticleBean {
 	private String uid;
 	private String regip;
 	private String rdate;
-	private String nick;
 	
+	// 추가 필드
+	private String nick;
 	private FileBean fb; // FileBean에 있는 get/set 불러오기
+	
 	
 	public FileBean getFb() {
 		return fb;
@@ -37,6 +39,11 @@ public class ArticleBean {
 	public void setParent(int parent) {
 		this.parent = parent;
 	}
+	
+	public void setParent(String parent) { // 댓글작업에 쓰는 Parent가 String이라서 거기서 바꾸는거보다 여기서 Override기법으로 추가하는게 편하다!
+		this.parent = Integer.parseInt(parent);
+	}
+	
 	
 	public int getComment() {
 		return comment;
