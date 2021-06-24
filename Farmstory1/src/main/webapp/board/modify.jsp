@@ -33,6 +33,8 @@
             <h3>글수정</h3>
             <article>
                 <form action="/Farmstory1/board/proc/modify.jsp" method = "post">
+                	<input type = "hidden" name = "group" value = "<%= group %>"/>
+                	<input type = "hidden" name = "cate" value = "<%= cate %>"/>
                 	<input type = "hidden" name = "seq" value = "<%= seq %>"/>
                     <table>
                         <tr>

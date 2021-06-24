@@ -5,11 +5,13 @@
 <%
 		request.setCharacterEncoding("utf-8");
 		
+		String group   = request.getParameter("group");
+		String cate    = request.getParameter("cate");
 		String seq     = request.getParameter("seq");
 		String title   = request.getParameter("title");
 		String content = request.getParameter("content");
 		
 		ArticleDao.getInstance().updateArticle(title, content, seq);
 		
-		response.sendRedirect("/Farmstory1/board/view.jsp?seq="+seq);
+		response.sendRedirect("/Farmstory1/board/view.jsp?group="+group+"&cate="+cate+"&seq="+seq);
 %>

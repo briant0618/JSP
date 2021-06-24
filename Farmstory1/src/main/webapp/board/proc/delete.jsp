@@ -9,5 +9,5 @@
 	
 	ArticleDao.getInstance().deleteArticle(seq);
 	
-	response.sendRedirect("/Farmstory1/board/view.jsp?group="+group+"&cate="+cate+"&seq="+seq);
+	response.sendRedirect("/Farmstory1/board/list.jsp?group="+group+"&cate="+cate);
 %>	

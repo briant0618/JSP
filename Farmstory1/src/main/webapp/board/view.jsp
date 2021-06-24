@@ -111,7 +111,7 @@
     </table>
     <div>
         <% if(mb.getUid().equals(article.getUid())){ %>
-        	<a href="/Farmstory1/board/proc/delete.jsp?seq=<%= article.getSeq() %>" class="btnDelete">삭제</a>
+        	<a href="/Farmstory1/board/proc/delete.jsp?group=<%= group %>&cate=<%= cate %>&seq=<%= article.getSeq() %>" class="btnDelete">삭제</a>
         	<a href="/Farmstory1/board/modify.jsp?group=<%= group %>&cate=<%= cate %>&seq=<%= article.getSeq() %>" class="btnModify">수정</a>
         <% } %>
         <a href="/Farmstory1/board/list.jsp?group=<%= group %>&cate=<%= cate %>" class="btnList">목록</a>
