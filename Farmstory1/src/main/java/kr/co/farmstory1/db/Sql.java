@@ -26,7 +26,18 @@ public class Sql {
 	
 	public static final String SELECT_COUNT_ARTICLE = "SELECT COUNT(*) FROM `JBoard_Article` WHERE `parent`=0 AND `cate` =?"; // all하면 댓글까지 계산되서 댓글빼고 계산 추가함 + cate구분 추가
 	
-	
+	public static final String SELECT_LATESTS  = "(SELECT * FROM `JBoard_Article` WHERE `cate`='grow' AND `parent`=0 ORDER BY `seq` DESC LIMIT 5) "
+													+ "UNION "
+													+ "(SELECT * FROM `JBoard_Article` WHERE `cate`='school' AND `parent`=0 ORDER BY `seq` DESC LIMIT 5) "
+													+ "UNION "
+													+ "(SELECT * FROM `JBoard_Article` WHERE `cate`='story' AND `parent`=0 ORDER BY `seq` DESC LIMIT 5) "
+													+ "UNION "
+													+ "(SELECT * FROM `JBoard_Article` WHERE `cate`='notice' AND `parent`=0 ORDER BY `seq` DESC LIMIT 3) "
+													+ "UNION "
+													+ "(SELECT * FROM `JBoard_Article` WHERE `cate`='qna' AND `parent`=0 ORDER BY `seq` DESC LIMIT 3) "
+													+ "UNION "
+													+ "(SELECT * FROM `JBoard_Article` WHERE `cate`='faq' AND `parent`=0 ORDER BY `seq` DESC LIMIT 3)";
+											
 	public static final String SELECT_ARTICLE = "SELECT * FROM `JBoard_Article` AS a "
 													+ "LEFT JOIN `JBoard_File` AS b "
 													+ "ON a.seq = b.parent "
@@ -48,6 +59,9 @@ public class Sql {
 											
 	public static final String SELECT_FILE = "SELECT * FROM `JBoard_File` WHERE `seq` =?";
 	
+	public static final String SELECT_MAX_SEQ = "SELECT MAX(`seq`) FROM `JBoard_Article`";
+	
+	
 	public static final String INSERT_ARTICLE = "INSERT INTO `JBoard_Article` SET "
 												   + " `cate` = ?,"
 												   + " `title` =?,"
@@ -64,7 +78,7 @@ public class Sql {
 												   + " `regip` =?,"
 												   + " `rdate` = NOW()";
 	
-	public static final String SELECT_MAX_SEQ = "SELECT MAX(`seq`) FROM `JBoard_Article`";
+	
 	
 	public static final String INSERT_FILE = "INSERT INTO `JBoard_File` SET "
 													+ " `parent` = ?,"

@@ -3,8 +3,9 @@ package kr.co.farmstory1.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import java.sql.PreparedStatement;
 
 import kr.co.farmstory1.bean.ArticleBean;
@@ -125,6 +126,36 @@ public class ArticleDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<ArticleBean> selectLatests() { // index에 최신 board글 띄우는 작업
+		
+		List<ArticleBean> latests = new ArrayList<ArticleBean>();
+		
+				
+		try {
+			
+			Connection conn = DBConfig.getInstance().getConnection();
+			PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_LATESTS); 
+			ResultSet rs = psmt.executeQuery();
+			
+			while(rs.next()) { // 15개의 글을 list로 만들어버린다.
+				
+				ArticleBean article = new ArticleBean();
+				article.setSeq(rs.getInt(1));
+				article.setCate(rs.getString(4));
+				article.setTitle(rs.getString(5));
+				article.setRdate(rs.getString(11).substring(2, 10));
+				
+				latests.add(article); // latests list에 15개의 article이 반복된다.
+				
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return latests;
+	}
+	
 	
 	public ArticleBean selectArticle(String seq) { // view.jsp에 사용되어 글을 보기위한 구문
 		
