@@ -7,7 +7,6 @@ import java.util.List;
 
 import java.sql.PreparedStatement;
 
-
 import kr.co.jboard1.bean.ArticleBean;
 import kr.co.jboard1.bean.FileBean;
 import kr.co.jboard1.db.DBConfig;

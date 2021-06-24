@@ -7,5 +7,5 @@
 	
 	ArticleDao.getInstance().deleteArticle(seq);
 	
-	response.sendRedirect("/JBoard1/view.jsp");
+	response.sendRedirect("/JBoard1/list.jsp");
 %>	
