@@ -1,7 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	request.setCharacterEncoding("utf-8");
+	String success = request.getParameter("success"); // Java 변수
+	
+%>
+<script>
+    	var success = "<%= success %>";  // JS 변수 [위의 success랑 헷갈리지말아요]
+    	if(success == 100){
+    		alert('해당하는 회원이 존재하지 않습니다. ID/PW를 다시 확인해주세요.')
+    	}else if(success == 101){
+    		alert('우선 로그인후에 접속 해주시길 바랍니다.')
+    	}else if(success == 102){
+    		alert('로그 아웃이 정상적으로 처리되었습니다.')
+    	}
+    </script>
 <%@ include file = "../_header.jsp" %>
         <section id="user" class="login">
-            <form action="../list.html">
+            <form action="/Farmstory1/user/proc/login.jsp">
                 <table border="0">
                     <tr>
                         <td><img src="../img/login_ico_id.png" alt="아이디"/></td>
