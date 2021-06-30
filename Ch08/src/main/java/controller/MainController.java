@@ -92,12 +92,21 @@ public class MainController extends HttpServlet{  // Servlet을 상속 받아야합니다
 		CommonService instance = (CommonService)instances.get(key);
 		
 		// service 객체 실행 후 view return을 받기
-		String view = instance.requestProc(req, resp); // 각각의 requestProc의 return값 받아오기
+		String result = instance.requestProc(req, resp); // 각각의 requestProc의 return값 받아오기
+		// view에서 result로 바뀐이유 -> post전송방식에서 redirect를 받는 형식인데 이러면 뒤의 forward를 받지 못해서 result로 바꿔버림
+		
+		if(result.startsWith("redirect:")) {
+			// redirect 받을 때
+			
+			String redirectUrl = result.substring(9);
+			resp.sendRedirect(redirectUrl);
+			
+		}else {	
 		
 		// view 정보 가지고 forward 하기
-		RequestDispatcher dispatcher = req.getRequestDispatcher(view);
+		RequestDispatcher dispatcher = req.getRequestDispatcher(result);
 		dispatcher.forward(req, resp);
-		
+		}
 	}
 
 	
