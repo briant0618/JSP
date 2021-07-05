@@ -118,7 +118,7 @@
                         <% for(int i=18 ; i<21 ; i++){ %>
 		                <li><a href="/Farmstory1/board/view.jsp?group=community&cate=<%= latests.get(i).getCate() %>&seq=<%= latests.get(i).getSeq() %>">· <%= latests.get(i).getTitle() %></a></li>
 		                <% } %>
-                    </ul>
+                    </ul>																										
                 </div>
                 <div id="tabs-3">
                     <ul>

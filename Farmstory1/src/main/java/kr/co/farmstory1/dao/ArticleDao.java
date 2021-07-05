@@ -432,7 +432,7 @@ public class ArticleDao {
 	}
 	
 	
-	public void deleteArticle(String seq) {
+	public void deleteArticle(String seq, String parent) {
 		
 		try{
 			// 1,2단계
@@ -440,6 +440,7 @@ public class ArticleDao {
 			// 3단계
 			PreparedStatement psmt = conn.prepareStatement(Sql.DELETE_ARTICLE);
 			psmt.setString(1, seq);
+			psmt.setString(2, parent);
 			// 4단계
 			psmt.executeUpdate();
 			// 5단계			

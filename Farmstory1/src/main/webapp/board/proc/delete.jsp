@@ -6,8 +6,9 @@
 	String group = request.getParameter("group");
 	String cate = request.getParameter("cate");
 	String seq = request.getParameter("seq");
+	String parent = request.getParameter("parent");
 	
-	ArticleDao.getInstance().deleteArticle(seq);
+	ArticleDao.getInstance().deleteArticle(seq,parent);
 	
 	response.sendRedirect("/Farmstory1/board/list.jsp?group="+group+"&cate="+cate);
 %>	

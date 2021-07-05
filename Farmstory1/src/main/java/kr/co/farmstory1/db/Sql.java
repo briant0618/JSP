@@ -102,7 +102,7 @@ public class Sql {
 	
 	public static final String UPDATE_FILE_DOWNLOAD = "UPDATE `JBoard_File` SET `download`=`download`+1 WHERE `seq`=?";
 	
-	public static final String DELETE_ARTICLE = "DELETE FROM `JBoard_Article` WHERE `seq`=?";
+	public static final String DELETE_ARTICLE = "DELETE FROM `JBoard_Article` WHERE `seq`=? OR `parent`=?";
 																
 	
 	public static final String DELETE_COMMENT = "DELETE FROM `JBoard_Article` WHERE `seq`=?";
